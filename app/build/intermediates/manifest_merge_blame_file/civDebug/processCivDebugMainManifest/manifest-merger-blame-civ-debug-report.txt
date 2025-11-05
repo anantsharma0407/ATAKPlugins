@@ -1,8 +1,8 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.atakmap.android.helloworld.plugin"
-4    android:versionCode="1"
-5    android:versionName="1.0 () - [5.5.0]" >
+4    android:versionCode="1762326037"
+5    android:versionName="1.0 (55c97889) - [5.5.0]" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="21"
@@ -32,7 +32,7 @@
 22-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:15:22-76
 23
 24    <application
-24-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:18:5-103:19
+24-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:18:5-110:19
 25        android:allowBackup="false"
 25-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:19:9-36
 26        android:debuggable="true"
@@ -98,86 +98,97 @@
 59-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:50:25-97
 60            </intent-filter>
 61        </service>
-62
-63        <activity
-63-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:54:9-59:20
-64            android:name="com.atakmap.android.helloworld.CameraActivity"
-64-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:55:13-73
-65            android:configChanges="orientation"
-65-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:58:13-48
-66            android:exported="true"
-66-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:57:13-36
-67            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
-67-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:56:13-83
-68        </activity>
-69
-70        <!--
-71        Commented out, functionality absorbed by SpeechToActivity
-72        <activity
-73            android:name="com.atakmap.android.helloworld.SpeechToTextActivity"
-74            android:theme="@style/AppTheme"
-75            android:exported="true"
-76            android:configChanges="orientation"
-77            android:launchMode="singleTop">
-78            <intent-filter>
-79                <action android:name="com.atakmap.android.helloworld.SpeechToTextActivity"/>
-80            </intent-filter>
-81        </activity>
-82        -->
-83        <activity
-83-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:73:9-82:20
-84            android:name="com.atakmap.android.helloworld.speechtotext.SpeechToActivity"
-84-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:74:13-88
-85            android:configChanges="orientation"
-85-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:77:13-48
-86            android:exported="true"
-86-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:76:13-36
-87            android:launchMode="singleTop"
-87-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:78:13-43
-88            android:theme="@style/Theme.Transparent" >
-88-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:75:13-53
-89            <intent-filter>
-89-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:79:13-81:29
-90                <action android:name="com.atakmap.android.helloworld.SpeechToActivity" />
-90-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:80:17-89
-90-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:80:25-87
-91            </intent-filter>
-92        </activity>
-93
-94        <!-- allow for plugin discovery -->
-95        <activity
-95-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:85:8-91:19
-96            android:name="com.atakmap.app.component"
-96-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:85:18-58
-97            android:exported="true" >
-97-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:86:12-35
-98            <intent-filter android:label="@string/app_name" >
-98-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:88:12-90:28
-98-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:88:27-59
-99                <action android:name="com.atakmap.app.component" />
-99-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:89:15-66
-99-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:89:23-63
-100            </intent-filter>
-101        </activity>
-102        <activity
-102-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:93:9-101:20
-103            android:name="com.atakmap.android.helloworld.PluginPermissionActivity"
-103-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:93:19-89
-104            android:exported="true"
-104-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:94:13-36
-105            android:launchMode="singleInstance"
-105-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:95:13-48
-106            android:screenOrientation="behind"
-106-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:96:13-47
-107            android:theme="@style/PermissionTheme" >
-107-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:97:13-51
-108            <intent-filter>
-108-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:98:13-100:29
-109                <action android:name="com.atakmap.android.sip.SipPermissionsActivity" />
-109-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:99:17-89
-109-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:99:25-86
-110            </intent-filter>
-111        </activity>
-112    </application>
-113
-114</manifest>
+62        <service
+62-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:54:9-59:19
+63            android:name="com.atakmap.android.helloworld.plugin.LocationTrackingService"
+63-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:55:13-89
+64            android:exported="false"
+64-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:58:13-37
+65            android:foregroundServiceType="location"
+65-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:57:13-53
+66            android:label="Location Tracking Service" >
+66-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:56:13-54
+67        </service>
+68
+69        <activity
+69-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:61:9-66:20
+70            android:name="com.atakmap.android.helloworld.CameraActivity"
+70-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:62:13-73
+71            android:configChanges="orientation"
+71-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:65:13-48
+72            android:exported="true"
+72-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:64:13-36
+73            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+73-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:63:13-83
+74        </activity>
+75
+76        <!--
+77        Commented out, functionality absorbed by SpeechToActivity
+78        <activity
+79            android:name="com.atakmap.android.helloworld.SpeechToTextActivity"
+80            android:theme="@style/AppTheme"
+81            android:exported="true"
+82            android:configChanges="orientation"
+83            android:launchMode="singleTop">
+84            <intent-filter>
+85                <action android:name="com.atakmap.android.helloworld.SpeechToTextActivity"/>
+86            </intent-filter>
+87        </activity>
+88        -->
+89        <activity
+89-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:80:9-89:20
+90            android:name="com.atakmap.android.helloworld.speechtotext.SpeechToActivity"
+90-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:81:13-88
+91            android:configChanges="orientation"
+91-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:84:13-48
+92            android:exported="true"
+92-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:83:13-36
+93            android:launchMode="singleTop"
+93-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:85:13-43
+94            android:theme="@style/Theme.Transparent" >
+94-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:82:13-53
+95            <intent-filter>
+95-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:86:13-88:29
+96                <action android:name="com.atakmap.android.helloworld.SpeechToActivity" />
+96-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:87:17-89
+96-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:87:25-87
+97            </intent-filter>
+98        </activity>
+99
+100        <!-- allow for plugin discovery -->
+101        <activity
+101-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:92:8-98:19
+102            android:name="com.atakmap.app.component"
+102-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:92:18-58
+103            android:exported="true" >
+103-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:93:12-35
+104            <intent-filter android:label="@string/app_name" >
+104-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:95:12-97:28
+104-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:95:27-59
+105                <action android:name="com.atakmap.app.component" />
+105-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:96:15-66
+105-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:96:23-63
+106            </intent-filter>
+107        </activity>
+108        <activity
+108-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:100:9-108:20
+109            android:name="com.atakmap.android.helloworld.PluginPermissionActivity"
+109-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:100:19-89
+110            android:exported="true"
+110-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:101:13-36
+111            android:launchMode="singleInstance"
+111-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:102:13-48
+112            android:screenOrientation="behind"
+112-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:103:13-47
+113            android:theme="@style/PermissionTheme" >
+113-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:104:13-51
+114            <intent-filter>
+114-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:105:13-107:29
+115                <action android:name="com.atakmap.android.sip.SipPermissionsActivity" />
+115-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:106:17-89
+115-->/Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/AndroidManifest.xml:106:25-86
+116            </intent-filter>
+117        </activity>
+118    </application>
+119
+120</manifest>
