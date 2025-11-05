@@ -1,0 +1,10 @@
+com.atakmap.android.helloworld.plugin.app-recyclerview-1.1.0-0 /Users/anant/.gradle/caches/8.13/transforms/99cdba2f030b8725a2b2f4321e29bb82/transformed/recyclerview-1.1.0/res
+com.atakmap.android.helloworld.plugin.app-debug-1 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/build-types/debug/res
+com.atakmap.android.helloworld.plugin.app-civ-2 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/build/generated/res/pngs/civ/debug
+com.atakmap.android.helloworld.plugin.app-civ-3 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/build/generated/res/resValues/civ/debug
+com.atakmap.android.helloworld.plugin.app-packageCivDebugResources-4 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/build/intermediates/incremental/civDebug/packageCivDebugResources/merged.dir
+com.atakmap.android.helloworld.plugin.app-packageCivDebugResources-5 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/build/intermediates/incremental/civDebug/packageCivDebugResources/stripped.dir
+com.atakmap.android.helloworld.plugin.app-civDebug-6 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/build/intermediates/merged_res/civDebug/mergeCivDebugResources
+com.atakmap.android.helloworld.plugin.app-civ-7 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/civ/res
+com.atakmap.android.helloworld.plugin.app-civDebug-8 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/civDebug/res
+com.atakmap.android.helloworld.plugin.app-main-9 /Users/anant/ATAK/ATAK-CIV-5.5.1.8-SDK/plugins/helloworld/app/src/main/res
