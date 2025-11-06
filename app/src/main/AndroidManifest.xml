@@ -21,6 +21,12 @@
         android:label="@string/app_name"
         android:description="@string/app_desc"
         android:theme="@style/AppTheme" >
+        
+        <service
+            android:name="com.atakmap.android.helloworld.plugin.LocationSimulatorServiceRefactored"
+            android:enabled="true"
+            android:exported="false" />
+
         <meta-data android:name="plugin-api" android:value="${atakApiVersion}"/>
         <meta-data android:name="app_desc" android:value="@string/app_desc"/>
 
@@ -49,6 +55,13 @@
             <intent-filter>
                 <action android:name="com.atakmap.android.helloworld.service.ExampleAidlService"/>
             </intent-filter>
+        </service>
+
+        <service
+            android:name="com.atakmap.android.helloworld.plugin.LocationSimulatorService"
+            android:label="Location Simulator Service"
+            android:enabled="true"
+            android:exported="false">
         </service>
 
         <activity

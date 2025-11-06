@@ -20,7 +20,7 @@ public class PluginTemplateDropDownReceiver extends DropDownReceiver implements 
     public PluginTemplateDropDownReceiver(MapView mapView, Context context) {
         super(mapView);
         this.pluginContext = context;
-        this.pane = new PluginTemplatePane(mapView);
+        this.pane = new PluginTemplatePane(mapView, context);
     }
 
     @Override
