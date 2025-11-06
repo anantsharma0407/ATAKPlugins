@@ -41,10 +41,12 @@ public class LocationSimulator {
     // Route configuration
     private List<Waypoint> route = new ArrayList<>();
     private int routeIndex = 0;
-    private double routeSpeedMetersPerSec = 100; // 100 m/s
+    private double routeSpeedMetersPerSec = 100; // Will be calculated based on route
+    private double currentVelocityMps = 0; // Current velocity in meters per second
     private boolean isRouteMoving = false;
     private long lastRouteTick = 0;
     private double routeFraction = 0; // Position between waypoints (0-1)
+    private static final double LAP_TIME_SECONDS = 30.0; // Complete lap in 30 seconds
 
     // Broadcast cadence (Hz)
     private int streamHz = 1; // 1 update per second
@@ -111,10 +113,17 @@ public class LocationSimulator {
      * Set simulation mode
      */
     public void setMode(Mode mode) {
+        boolean wasStreaming = isStreaming;
         this.mode = mode;
         stopRoute();
         initializeRoute();
-        Log.d(TAG, "Mode set to: " + mode);
+
+        // If we were streaming and the new mode uses routes, restart route movement
+        if (wasStreaming && (mode == Mode.ROUTE || mode == Mode.SQUARE)) {
+            startRoute();
+        }
+
+        Log.d(TAG, "Mode set to: " + mode + " (wasStreaming=" + wasStreaming + ")");
     }
 
     /**
@@ -157,6 +166,13 @@ public class LocationSimulator {
     }
 
     /**
+     * Get current velocity in meters per second
+     */
+    public double getCurrentVelocityMps() {
+        return currentVelocityMps;
+    }
+
+    /**
      * Cleanup resources
      */
     public void dispose() {
@@ -171,13 +187,37 @@ public class LocationSimulator {
      * Initialize route based on current mode
      */
     private void initializeRoute() {
-        if (mode == Mode.SQUARE) {
-            route = generateSquareRoute(CENTER_LAT, CENTER_LON, SQUARE_SIDE_METERS,
-                                       SQUARE_POINTS_PER_SIDE, 0, true);
-        } else if (mode == Mode.ROUTE) {
-            route = generateCircleRoute(CENTER_LAT, CENTER_LON, CIRCLE_RADIUS_METERS,
-                                       CIRCLE_POINTS, 0, true);
+        route.clear();
+
+        switch (mode) {
+            case STATIC:
+                // Static mode - just use the current position
+                current = new Coordinate(CENTER_LAT, CENTER_LON);
+                break;
+
+            case JITTER:
+                // Jitter mode - use current position as base
+                current = new Coordinate(CENTER_LAT, CENTER_LON);
+                break;
+
+            case ROUTE:
+                route = generateCircleRoute(CENTER_LAT, CENTER_LON, CIRCLE_RADIUS_METERS,
+                                           CIRCLE_POINTS, 0, true);
+                if (!route.isEmpty()) {
+                    current = new Coordinate(route.get(0).latitude, route.get(0).longitude);
+                }
+                break;
+
+            case SQUARE:
+                route = generateSquareRoute(CENTER_LAT, CENTER_LON, SQUARE_SIDE_METERS,
+                                           SQUARE_POINTS_PER_SIDE, 0, true);
+                if (!route.isEmpty()) {
+                    current = new Coordinate(route.get(0).latitude, route.get(0).longitude);
+                }
+                break;
         }
+
+        Log.d(TAG, "Initialized route for mode: " + mode);
     }
 
     // ==================== Coordinate Helpers ====================
@@ -335,16 +375,40 @@ public class LocationSimulator {
     // ==================== Route Movement ====================
 
     /**
+     * Calculate total distance of the route
+     */
+    private double calculateTotalRouteDistance() {
+        if (route.size() < 2) return 0;
+
+        double totalDistance = 0;
+        for (int i = 0; i < route.size() - 1; i++) {
+            totalDistance += haversineDistance(route.get(i), route.get(i + 1));
+        }
+        return totalDistance;
+    }
+
+    /**
      * Start route movement
      */
     private void startRoute() {
         if (isRouteMoving || route.size() < 2) return;
+
+        // Calculate speed needed to complete lap in LAP_TIME_SECONDS
+        double totalDistance = calculateTotalRouteDistance();
+        routeSpeedMetersPerSec = totalDistance / LAP_TIME_SECONDS;
+        currentVelocityMps = routeSpeedMetersPerSec;
+
         isRouteMoving = true;
         routeIndex = 0;
         routeFraction = 0;
         lastRouteTick = System.currentTimeMillis();
         current = new Coordinate(route.get(0).latitude, route.get(0).longitude);
-        Log.d(TAG, "Route started with " + route.size() + " waypoints");
+
+        Log.d(TAG, "Route started with " + route.size() + " waypoints, total distance=" +
+              String.format("%.2f", totalDistance) + "m, speed=" +
+              String.format("%.2f", routeSpeedMetersPerSec) + "m/s (" +
+              String.format("%.2f", routeSpeedMetersPerSec * 3.6) + " km/h)");
+
         tickRoute();
     }
 
@@ -360,6 +424,7 @@ public class LocationSimulator {
      */
     private void tickRoute() {
         if (!isRouteMoving || (mode != Mode.ROUTE && mode != Mode.SQUARE) || route.size() < 2) {
+            Log.d(TAG, "tickRoute early return: isMoving=" + isRouteMoving + ", mode=" + mode + ", routeSize=" + route.size());
             return;
         }
 
@@ -371,10 +436,13 @@ public class LocationSimulator {
         Waypoint b = route.get((routeIndex + 1) % route.size());
         double distance = haversineDistance(a, b);
 
+        Log.d(TAG, "tickRoute: elapsed=" + elapsed + "s, distance=" + distance + "m, routeFraction=" + routeFraction);
+
         if (distance == 0) {
             // Move to next waypoint immediately
             routeIndex = (routeIndex + 1) % route.size();
             current = new Coordinate(a.latitude, a.longitude);
+            Log.d(TAG, "Zero distance, moving to next waypoint: " + routeIndex);
             handler.postDelayed(this::tickRoute, (long)(a.holdSeconds * 1000));
             return;
         }
@@ -383,17 +451,21 @@ public class LocationSimulator {
         double step = (routeSpeedMetersPerSec * elapsed) / distance;
         routeFraction += step;
 
+        Log.d(TAG, "Movement: step=" + step + ", newFraction=" + routeFraction + ", speed=" + routeSpeedMetersPerSec + "m/s");
+
         if (routeFraction >= 1.0) {
             // Reached next waypoint
             routeIndex = (routeIndex + 1) % route.size();
             Waypoint wp = route.get(routeIndex);
             current = new Coordinate(wp.latitude, wp.longitude);
             routeFraction = 0;
+            Log.d(TAG, "Reached waypoint " + routeIndex + ": " + wp.latitude + ", " + wp.longitude);
             handler.postDelayed(this::tickRoute, (long)(wp.holdSeconds * 1000));
         } else {
             // Interpolate position
             Coordinate p = lerpCoord(a, b, routeFraction);
             current = new Coordinate(p.latitude, p.longitude);
+            Log.d(TAG, "Interpolated to: " + current.latitude + ", " + current.longitude);
             handler.postDelayed(this::tickRoute, 200); // Smooth movement, tick every 200ms
         }
     }
@@ -419,13 +491,17 @@ public class LocationSimulator {
         switch (mode) {
             case STATIC:
                 coord = current;
+                Log.d(TAG, "Broadcasting STATIC: " + coord.latitude + ", " + coord.longitude);
                 break;
             case JITTER:
                 coord = applyJitter(current, jitterMeters);
+                Log.d(TAG, "Broadcasting JITTER: " + coord.latitude + ", " + coord.longitude);
                 break;
             case ROUTE:
             case SQUARE:
                 coord = current;
+                Log.d(TAG, "Broadcasting " + mode + ": " + coord.latitude + ", " + coord.longitude +
+                      " (routeIndex=" + routeIndex + ", fraction=" + routeFraction + ", isMoving=" + isRouteMoving + ")");
                 break;
             default:
                 coord = current;

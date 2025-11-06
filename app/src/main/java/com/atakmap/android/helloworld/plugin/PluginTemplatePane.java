@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,7 @@ public class PluginTemplatePane {
     private final Context context;
     private View root;
 
-    // Location simulator
+    // Location simulator (not a service - just a regular class)
     private LocationSimulator locationSimulator;
 
     // Map marker
@@ -29,6 +30,7 @@ public class PluginTemplatePane {
     // UI elements
     private TextView statusText;
     private TextView locationText;
+    private TextView velocityText;
     private Button btnStart;
     private Button btnStop;
     private Button btnModeStatic;
@@ -59,6 +61,7 @@ public class PluginTemplatePane {
             public void onLocationUpdate(double latitude, double longitude) {
                 updateMarkerPosition(latitude, longitude);
                 updateLocationDisplay(latitude, longitude);
+                updateVelocityDisplay();
             }
         });
 
@@ -96,8 +99,16 @@ public class PluginTemplatePane {
         locationText.setText("Location: --");
         locationText.setTextSize(14);
         locationText.setTextColor(0xFFFFFFFF);
-        locationText.setPadding(0, 10, 0, 20);
+        locationText.setPadding(0, 10, 0, 10);
         layout.addView(locationText);
+
+        // Velocity text
+        velocityText = new TextView(context);
+        velocityText.setText("Velocity: 0 m/s (0 km/h)");
+        velocityText.setTextSize(14);
+        velocityText.setTextColor(0xFF00BFFF); // Deep sky blue
+        velocityText.setPadding(0, 10, 0, 20);
+        layout.addView(velocityText);
 
         // Start button
         btnStart = new Button(context);
@@ -140,7 +151,13 @@ public class PluginTemplatePane {
         btnModeSquare.setOnClickListener(v -> setMode(LocationSimulator.Mode.SQUARE));
         layout.addView(btnModeSquare);
 
-        root = layout;
+        // Wrap layout in ScrollView for scrollability
+        ScrollView scrollView = new ScrollView(context);
+        scrollView.setFillViewport(true);
+        scrollView.setBackgroundColor(0xFF2B2B2B);
+        scrollView.addView(layout);
+
+        root = scrollView;
         return root;
     }
 
@@ -271,6 +288,23 @@ public class PluginTemplatePane {
                 if (locationText != null) {
                     String coordText = String.format("Location: %.6f, %.6f", latitude, longitude);
                     locationText.setText(coordText);
+                }
+            }
+        });
+    }
+
+    /**
+     * Update velocity display
+     */
+    private void updateVelocityDisplay() {
+        mapView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (velocityText != null && locationSimulator != null) {
+                    double velocityMps = locationSimulator.getCurrentVelocityMps();
+                    double velocityKmh = velocityMps * 3.6; // Convert m/s to km/h
+                    String velText = String.format("Velocity: %.2f m/s (%.2f km/h)", velocityMps, velocityKmh);
+                    velocityText.setText(velText);
                 }
             }
         });
