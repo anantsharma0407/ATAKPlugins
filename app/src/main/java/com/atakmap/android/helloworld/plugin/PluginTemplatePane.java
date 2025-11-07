@@ -176,6 +176,11 @@ public class PluginTemplatePane {
         locationSimulator.stopStreaming();
         removeMarker();
         updateStatusDisplay("Stopped", 0xFFFFA500);
+
+        // Reset location and velocity displays
+        resetLocationDisplay();
+        resetVelocityDisplay();
+
         Toast.makeText(context, "Tracking stopped", Toast.LENGTH_SHORT).show();
     }
 
@@ -293,6 +298,34 @@ public class PluginTemplatePane {
                     double velocityKmh = velocityMps * 3.6; // Convert m/s to km/h
                     String velText = String.format("Velocity: %.2f m/s (%.2f km/h)", velocityMps, velocityKmh);
                     velocityText.setText(velText);
+                }
+            }
+        });
+    }
+
+    /**
+     * Reset location display to default
+     */
+    private void resetLocationDisplay() {
+        mapView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (locationText != null) {
+                    locationText.setText("Location: --");
+                }
+            }
+        });
+    }
+
+    /**
+     * Reset velocity display to default
+     */
+    private void resetVelocityDisplay() {
+        mapView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (velocityText != null) {
+                    velocityText.setText("Velocity: 0 m/s (0 km/h)");
                 }
             }
         });
