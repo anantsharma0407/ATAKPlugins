@@ -33,8 +33,6 @@ public class PluginTemplatePane {
     private TextView velocityText;
     private Button btnStart;
     private Button btnStop;
-    private Button btnModeStatic;
-    private Button btnModeJitter;
     private Button btnModeCircle;
     private Button btnModeSquare;
 
@@ -124,23 +122,13 @@ public class PluginTemplatePane {
 
         // Mode selection label
         TextView modeLabel = new TextView(context);
-        modeLabel.setText("Select Mode:");
+        modeLabel.setText("Select Route Mode:");
         modeLabel.setTextSize(18);
         modeLabel.setTextColor(0xFFFFFFFF);
         modeLabel.setPadding(0, 20, 0, 10);
         layout.addView(modeLabel);
 
         // Mode buttons
-        btnModeStatic = new Button(context);
-        btnModeStatic.setText("Static");
-        btnModeStatic.setOnClickListener(v -> setMode(LocationSimulator.Mode.STATIC));
-        layout.addView(btnModeStatic);
-
-        btnModeJitter = new Button(context);
-        btnModeJitter.setText("Jitter");
-        btnModeJitter.setOnClickListener(v -> setMode(LocationSimulator.Mode.JITTER));
-        layout.addView(btnModeJitter);
-
         btnModeCircle = new Button(context);
         btnModeCircle.setText("Circle Route (50 mi radius)");
         btnModeCircle.setOnClickListener(v -> setMode(LocationSimulator.Mode.ROUTE));

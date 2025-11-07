@@ -6,11 +6,10 @@ import com.atakmap.coremap.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Location simulator (non-service implementation)
- * Supports multiple modes: static, jitter, route (circle), and square
+ * Supports two route modes: circle and square
  */
 public class LocationSimulator {
 
@@ -24,8 +23,6 @@ public class LocationSimulator {
 
     // Simulation mode
     public enum Mode {
-        STATIC,
-        JITTER,
         ROUTE,  // Circle route
         SQUARE
     }
@@ -34,9 +31,6 @@ public class LocationSimulator {
 
     // Base/current coordinate
     private Coordinate current = new Coordinate(17.3850, 78.4867);
-
-    // Jitter configuration (meters)
-    private double jitterMeters = 10;
 
     // Route configuration
     private List<Waypoint> route = new ArrayList<>();
@@ -51,9 +45,6 @@ public class LocationSimulator {
     // Broadcast cadence (Hz)
     private int streamHz = 1; // 1 update per second
     private boolean isStreaming = false;
-
-    // Random generator
-    private final Random random = new Random();
 
     // Constants
     private static final double CENTER_LAT = 17.3850;
@@ -190,16 +181,6 @@ public class LocationSimulator {
         route.clear();
 
         switch (mode) {
-            case STATIC:
-                // Static mode - just use the current position
-                current = new Coordinate(CENTER_LAT, CENTER_LON);
-                break;
-
-            case JITTER:
-                // Jitter mode - use current position as base
-                current = new Coordinate(CENTER_LAT, CENTER_LON);
-                break;
-
             case ROUTE:
                 route = generateCircleRoute(CENTER_LAT, CENTER_LON, CIRCLE_RADIUS_METERS,
                                            CIRCLE_POINTS, 0, true);
@@ -234,21 +215,6 @@ public class LocationSimulator {
      */
     private double metersToLon(double meters, double lat) {
         return meters / (111320.0 * Math.cos(Math.toRadians(lat)));
-    }
-
-    /**
-     * Apply jitter to coordinate
-     */
-    private Coordinate applyJitter(Coordinate base, double radiusMeters) {
-        double angle = random.nextDouble() * 2 * Math.PI;
-        double r = Math.sqrt(random.nextDouble()) * radiusMeters;
-        double dy = r * Math.cos(angle);
-        double dx = r * Math.sin(angle);
-
-        return new Coordinate(
-            base.latitude + metersToLat(dy),
-            base.longitude + metersToLon(dx, base.latitude)
-        );
     }
 
     /**
@@ -486,30 +452,13 @@ public class LocationSimulator {
     private void broadcastLocation() {
         if (!isStreaming) return;
 
-        Coordinate coord;
-
-        switch (mode) {
-            case STATIC:
-                coord = current;
-                Log.d(TAG, "Broadcasting STATIC: " + coord.latitude + ", " + coord.longitude);
-                break;
-            case JITTER:
-                coord = applyJitter(current, jitterMeters);
-                Log.d(TAG, "Broadcasting JITTER: " + coord.latitude + ", " + coord.longitude);
-                break;
-            case ROUTE:
-            case SQUARE:
-                coord = current;
-                Log.d(TAG, "Broadcasting " + mode + ": " + coord.latitude + ", " + coord.longitude +
-                      " (routeIndex=" + routeIndex + ", fraction=" + routeFraction + ", isMoving=" + isRouteMoving + ")");
-                break;
-            default:
-                coord = current;
-        }
+        // Broadcast current coordinate
+        Log.d(TAG, "Broadcasting " + mode + ": " + current.latitude + ", " + current.longitude +
+              " (routeIndex=" + routeIndex + ", fraction=" + routeFraction + ", isMoving=" + isRouteMoving + ")");
 
         // Notify listener
         if (locationListener != null) {
-            locationListener.onLocationUpdate(coord.latitude, coord.longitude);
+            locationListener.onLocationUpdate(current.latitude, current.longitude);
         }
 
         // Schedule next broadcast
