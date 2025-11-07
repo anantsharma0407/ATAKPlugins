@@ -56,17 +56,14 @@ public class PluginTemplateDropDownReceiver extends DropDownReceiver implements 
 
     @Override
     public void onDropDownSelectionRemoved() {
-        // Implementation if needed
     }
 
     @Override
     public void onDropDownVisible(boolean visible) {
-        // Implementation if needed
     }
 
     @Override
     public void onDropDownSizeChanged(double width, double height) {
-        // Implementation if needed
     }
 
     @Override
@@ -79,10 +76,6 @@ public class PluginTemplateDropDownReceiver extends DropDownReceiver implements 
         pane.onDestroyView();
     }
 
-    /**
-     * Get access to the pane for updating marker position
-     * @return the PluginTemplatePane instance
-     */
     public PluginTemplatePane getPane() {
         return pane;
     }

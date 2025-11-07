@@ -48,8 +48,17 @@
         android:id="@+id/location_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location: ---"
+        android:text="Location: --"
         android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/velocity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Velocity: 0 m/s (0 km/h)"
+        android:textColor="#00BFFF"
         android:textSize="12sp"
         android:layout_marginTop="4dp"/>
 

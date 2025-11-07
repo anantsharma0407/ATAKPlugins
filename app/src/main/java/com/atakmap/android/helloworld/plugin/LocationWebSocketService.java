@@ -32,7 +32,7 @@ public class LocationWebSocketService {
     private static final long RECONNECT_DELAY_MS = 5000; // 5 seconds
 
     public interface LocationUpdateListener {
-        void onLocationUpdate(double latitude, double longitude);
+        void onLocationUpdate(double latitude, double longitude, double velocityMps);
         void onConnectionStatusChanged(boolean connected);
         void onError(String error);
     }
@@ -152,16 +152,16 @@ public class LocationWebSocketService {
             String messageType = json.optString("type", "");
 
             if ("location".equals(messageType)) {
-                // Server sends: {"type":"location", "payload":{"latitude":..., "longitude":...}}
                 if (json.has("payload")) {
                     JSONObject payload = json.getJSONObject("payload");
                     double latitude = payload.getDouble("latitude");
                     double longitude = payload.getDouble("longitude");
+                    double velocityMps = payload.optDouble("velocityMps", payload.optDouble("velocity", 0.0));
 
-                    Log.d(TAG, "Parsed location - Lat: " + latitude + ", Lon: " + longitude);
+                    Log.d(TAG, "Parsed location - Lat: " + latitude + ", Lon: " + longitude + ", Velocity: " + velocityMps + " m/s");
 
                     if (locationUpdateListener != null) {
-                        locationUpdateListener.onLocationUpdate(latitude, longitude);
+                        locationUpdateListener.onLocationUpdate(latitude, longitude, velocityMps);
                     }
                 }
             } else if ("status".equals(messageType)) {
@@ -181,24 +181,24 @@ public class LocationWebSocketService {
                 int clients = json.optInt("clients", 0);
                 Log.d(TAG, "Health check - Mode: " + mode + ", Clients: " + clients);
             } else if (json.has("latitude") && json.has("longitude")) {
-                // Direct format (fallback): {"latitude": 17.3850, "longitude": 78.4867}
                 double latitude = json.getDouble("latitude");
                 double longitude = json.getDouble("longitude");
+                double velocityMps = json.optDouble("velocity", 0.0);
 
-                Log.d(TAG, "Parsed location (direct) - Lat: " + latitude + ", Lon: " + longitude);
+                Log.d(TAG, "Parsed location (direct) - Lat: " + latitude + ", Lon: " + longitude + ", Velocity: " + velocityMps + " m/s");
 
                 if (locationUpdateListener != null) {
-                    locationUpdateListener.onLocationUpdate(latitude, longitude);
+                    locationUpdateListener.onLocationUpdate(latitude, longitude, velocityMps);
                 }
             } else if (json.has("lat") && json.has("lon")) {
-                // Alternative format
                 double latitude = json.getDouble("lat");
                 double longitude = json.getDouble("lon");
+                double velocityMps = json.optDouble("velocity", 0.0);
 
-                Log.d(TAG, "Parsed location (alt) - Lat: " + latitude + ", Lon: " + longitude);
+                Log.d(TAG, "Parsed location (alt) - Lat: " + latitude + ", Lon: " + longitude + ", Velocity: " + velocityMps + " m/s");
 
                 if (locationUpdateListener != null) {
-                    locationUpdateListener.onLocationUpdate(latitude, longitude);
+                    locationUpdateListener.onLocationUpdate(latitude, longitude, velocityMps);
                 }
             } else {
                 Log.w(TAG, "Unknown message format: " + jsonData);

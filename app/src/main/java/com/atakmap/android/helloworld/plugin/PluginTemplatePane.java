@@ -22,6 +22,7 @@ public class PluginTemplatePane {
     private LocationWebSocketService webSocketService;
     private android.widget.TextView statusText;
     private android.widget.TextView locationText;
+    private android.widget.TextView velocityText;
 
     // WebSocket URL - configure this to your server
     private static final String WEBSOCKET_URL = "ws://192.168.4.21:3000/getCoordinates";
@@ -45,17 +46,17 @@ public class PluginTemplatePane {
 
             webSocketService.setLocationUpdateListener(new LocationWebSocketService.LocationUpdateListener() {
                 @Override
-                public void onLocationUpdate(double latitude, double longitude) {
-                    Log.d(TAG, "Received location update - Lat: " + latitude + ", Lon: " + longitude);
+                public void onLocationUpdate(double latitude, double longitude, double velocityMps) {
+                    Log.d(TAG, "Received location update - Lat: " + latitude + ", Lon: " + longitude + ", Velocity: " + velocityMps + " m/s");
                     updateMarkerPosition(latitude, longitude);
                     updateLocationDisplay(latitude, longitude);
+                    updateVelocityDisplay(velocityMps);
                 }
 
                 @Override
                 public void onConnectionStatusChanged(final boolean connected) {
                     Log.d(TAG, "WebSocket connection status: " + connected);
                     final String status = connected ? "Connected" : "Disconnected";
-                    // Show toast on UI thread
                     mapView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -63,12 +64,14 @@ public class PluginTemplatePane {
                         }
                     });
                     updateStatusDisplay(connected);
+                    if (!connected) {
+                        resetDisplays();
+                    }
                 }
 
                 @Override
                 public void onError(final String error) {
                     Log.e(TAG, "WebSocket error: " + error);
-                    // Show toast on UI thread
                     mapView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -96,6 +99,7 @@ public class PluginTemplatePane {
         switchTrack = root.findViewById(R.id.switch_track);
         statusText = root.findViewById(R.id.status_text);
         locationText = root.findViewById(R.id.location_text);
+        velocityText = root.findViewById(R.id.velocity_text);
 
         if (switchTrack == null) {
             Log.e(TAG, "ERROR: switch_track not found in layout!");
@@ -226,13 +230,14 @@ public class PluginTemplatePane {
         if (webSocketService != null) {
             webSocketService.disconnect();
         }
+        resetDisplays();
     }
 
     public void onDestroyView() {
-        // Clean up
         Log.d(TAG, "Destroying view - cleaning up resources");
         stopTracking();
         removeMarker();
+        resetDisplays();
 
         if (webSocketService != null) {
             webSocketService.dispose();
@@ -324,9 +329,36 @@ public class PluginTemplatePane {
         });
     }
 
-    /**
-     * Set the WebSocket URL (optional - for dynamic configuration)
-     */
+    private void updateVelocityDisplay(final double velocityMps) {
+        mapView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (velocityText != null) {
+                    double velocityKmh = velocityMps * 3.6;
+                    String velText = String.format("Velocity: %.2f m/s (%.2f km/h)", velocityMps, velocityKmh);
+                    velocityText.setText(velText);
+                    Log.d(TAG, "Updated velocity display: " + velText);
+                } else {
+                    Log.e(TAG, "velocityText is null, cannot update velocity display");
+                }
+            }
+        });
+    }
+
+    private void resetDisplays() {
+        mapView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (locationText != null) {
+                    locationText.setText("Location: --");
+                }
+                if (velocityText != null) {
+                    velocityText.setText("Velocity: 0 m/s (0 km/h)");
+                }
+            }
+        });
+    }
+
     public void setWebSocketUrl(String url) {
         if (webSocketService != null) {
             webSocketService.disconnect();
