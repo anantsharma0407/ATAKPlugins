@@ -53,27 +53,6 @@ PORT=8080 node index.js
 
 ---
 
-## Default Configuration
-
-The server starts with these defaults:
-
-### Route Mode (Circle)
-- **Center**: Hyderabad, India (17.3850°N, 78.4867°E)
-- **Radius**: 80,467.2 meters (50 miles)
-- **Waypoints**: 73 points
-- **Speed**: 100 m/s
-- **Lap Time**: ~30 seconds
-- **Direction**: Clockwise
-
-### Square Mode
-- **Center**: Hyderabad, India (17.3850°N, 78.4867°E)
-- **Side Length**: 160,934.4 meters (100 miles)
-- **Waypoints**: 101 points (25 per side + closure)
-- **Speed**: 100 m/s
-- **Direction**: Clockwise
-
----
-
 ## Testing the Server
 
 ### Using wscat (WebSocket CLI tool)
@@ -421,115 +400,6 @@ function broadcastLocation() {
 
 ---
 
-## Advanced Usage
-
-### Multiple Clients
-
-The server supports multiple simultaneous WebSocket connections. Each client can:
-- Subscribe independently
-- Request different update rates
-- All receive the same location stream
-
-### Custom Routes via API
-
-You can dynamically load routes without restarting the server:
-
-```bash
-wscat -c ws://localhost:3000/getCoordinates
-```
-
-Then send:
-```json
-{
-  "type": "setRoute",
-  "route": [
-    {"latitude": 17.385, "longitude": 78.486},
-    {"latitude": 17.390, "longitude": 78.490},
-    {"latitude": 17.395, "longitude": 78.495}
-  ],
-  "speed": 10
-}
-```
-
-### Health Monitoring
-
-Check server status:
-```bash
-echo '{"type":"health"}' | wscat -c ws://localhost:3000/getCoordinates
-```
-
-Response:
-```json
-{
-  "type":"health",
-  "mode":"route",
-  "clients":1
-}
-```
-
----
-
-## Production Deployment
-
-For production use, consider:
-
-1. **Process Manager** (PM2):
-```bash
-npm install -g pm2
-pm2 start index.js --name fakelocation
-pm2 save
-pm2 startup
-```
-
-2. **SSL/TLS** (wss://):
-    - Use a reverse proxy (nginx, Apache)
-    - Terminate SSL at proxy
-    - Forward to WebSocket server
-
-3. **Authentication**:
-    - Add token-based auth to WebSocket handshake
-    - Validate tokens in `connection` event
-
-4. **Monitoring**:
-    - Add logging (Winston, Bunyan)
-    - Monitor client connections
-    - Track error rates
-
----
-
-## API Reference
-
-### Supported Message Types
-
-| Type | Direction | Purpose |
-|------|-----------|---------|
-| `subscribe` | Client → Server | Start receiving location updates |
-| `setMode` | Client → Server | Change simulation mode |
-| `setCoords` | Client → Server | Set static coordinates |
-| `setJitter` | Client → Server | Set jitter radius |
-| `setRoute` | Client → Server | Load custom route |
-| `setCircleRoute` | Client → Server | Generate circle route |
-| `health` | Client → Server | Get server status |
-| `location` | Server → Client | Location update |
-| `status` | Server → Client | Confirmation message |
-| `error` | Server → Client | Error notification |
-
----
-
-## License
-
-ISC
-
-## Author
-
-ATAK Plugin Development Team
-
-## Version
-
-1.0.0
-
----
-
 ## Quick Reference Card
 
 ### Start Server
@@ -565,5 +435,3 @@ kill -9 <PID>
 ```
 
 ---
-
-**Need Help?** Check the [Troubleshooting](#troubleshooting) section or review server logs in the console.
