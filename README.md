@@ -1,14 +1,85 @@
+# ATAK Plugin
+
+A comprehensive ATAK plugin that demonstrates location simulation, WebSocket communication, and various ATAK SDK features. This plugin serves as both a functional location simulator and a reference implementation for ATAK plugin development.
 
 The WebSocket server simulates GPS location updates for testing the ATAK HelloWorld Plugin.
 It must be executed before testing the plugin
 
+## Overview
+
+This plugin provides:
+- **Location Simulation**: Simulates GPS movement along circular and square routes
+- **WebSocket Integration**: Real-time location updates via WebSocket server
+- **Route Visualization**: Map markers and overlays showing simulated paths
+
+
 ## Prerequisites
 
-- **Node.js** (v14 or higher)
-- **npm** (comes with Node.js)
+### Required Software
+- **ATAK CIV**: Version 5.5.0 or higher installed on Android device/emulator
+- **Android Studio**: Arctic Fox (2020.3.1) or later
+- **JDK**: Java 17
+- **Gradle**: 8.8+ (wrapper included)
+- **Android SDK**: API Level 34 (compileSdk)
+- **Node.js**: v14+ (for FakeLocationService)
+- **npm**: Comes with Node.js
+
+## Building the Plugin
+### 1. Download and unzip the SDK package
+
+### 2. Unzip and create a "plugins" directory within the SDK folder
+
+### 4. Clone or Download the Project into the "plugins" directory
+
+### 5. Set Gradle Plugin Version 8.9.0
+
+### 6. Set Gradle Version 8.13
+
+### 7. Configure Android Studio and set the build variant to civDebug.
+
+### 8. Build the Plugin
+
+#### Using Gradle Command Line
+```bash
+# Build debug version (CIV flavor)
+./gradlew assembleCivDebug
+```
+
+#### Using Android Studio
+1. Open the project in Android Studio
+2. Select build variant: `Build > Select Build Variant`
+3. Choose desired flavor (e.g., `civDebug`)
+4. Build: `Build > Make Project` or `Ctrl+F9` (Windows/Linux) / `Cmd+F9` (Mac)
+
+---
 
 ## Installation_
 
+### Installing the plugin on device
+#### Method 1: ADB Install
+```bash
+# Install the plugin APK
+adb install -r app/build/outputs/apk/civ/debug/ATAK-Plugin-*.apk
+
+# Verify installation
+adb shell pm list packages | grep helloworld
+```
+
+#### Method 2: Via ATAK Interface
+1. Copy the APK to device storage
+2. Open ATAK
+3. Navigate to: `Settings > Tool Preferences > Manage Plugins`
+4. Tap "Load Plugin from SD Card"
+5. Select the APK file
+6. Restart ATAK when prompted
+
+#### Method 3: Android Studio
+1. Connect device via USB
+2. In Android Studio: `Run > Run 'app'`
+3. Select connected device
+4. Plugin will install and ATAK will restart
+
+### Installing the WebSocket server
 1. Navigate to the FakeLocationService directory:
 
 2. Install dependencies:
